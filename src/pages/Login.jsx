@@ -11,7 +11,6 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(null);
 
   const navigate = useNavigate();
 
@@ -41,8 +40,8 @@ export const Login = () => {
         // Set token to localStorage
         localStorage.setItem("token", res.user?.accessToken);
 
-        // Set data to response
-        setSuccess(res.message);
+        // Redirect to home page
+        navigate("/");
       })
       .catch((error) => {
         // Set loading to false after error
@@ -59,7 +58,6 @@ export const Login = () => {
     // Clear error && success after 3 seconds
     setTimeout(() => {
       setError(null);
-      setSuccess(null);
     }, 3000);
   };
 
@@ -119,8 +117,6 @@ export const Login = () => {
             </form>
 
             {error && <Alert status={"error"} message={error?.message} />}
-
-            {success && <Alert status={"success"} message={success} />}
           </div>
 
           <div className="mt-4 text-center footer">
