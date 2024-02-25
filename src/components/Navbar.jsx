@@ -14,7 +14,7 @@ export const Navbar = () => {
       .post(
         "/auth/logout",
         {},
-        { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        { Authorization: `Bearer ${user?.accessToken}` }
       )
       .then(() => {
         localStorage.removeItem("user");
