@@ -1,0 +1,19 @@
+.slug {
+    background-color: #dddddd;
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: .8rem;
+}
+
+.btn-tambah {
+    background-color: #dddddd;
+    padding: 7px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #000000;
+    font-weight: 600;
+}
+
+.btn-tambah:hover {
+    background-color: #c8c8c8;
+}
