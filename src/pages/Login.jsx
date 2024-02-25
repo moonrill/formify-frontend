@@ -53,12 +53,12 @@ export const Login = () => {
       .finally(() => {
         // Set loading to false after after finish
         setLoading(false);
+        // Clear error && success after 3 seconds
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
       });
 
-    // Clear error && success after 3 seconds
-    setTimeout(() => {
-      setError(null);
-    }, 3000);
   };
 
   return (
