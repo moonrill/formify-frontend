@@ -16,7 +16,7 @@ export const Login = () => {
 
   // Redirect to home if user is already logged in
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem("user")) {
       navigate("/");
     }
   }, [navigate]);
@@ -37,8 +37,8 @@ export const Login = () => {
         // Set loading to false after response
         setLoading(false);
 
-        // Set token to localStorage
-        localStorage.setItem("token", res.user?.accessToken);
+        // Set user to localStorage
+        localStorage.setItem("user", JSON.stringify(res?.user));
 
         // Redirect to home page
         navigate("/");
@@ -58,7 +58,6 @@ export const Login = () => {
           setError(null);
         }, 3000);
       });
-
   };
 
   return (
