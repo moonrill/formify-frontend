@@ -5,7 +5,7 @@ export const Layout = () => {
   return (
     <>
       <Navbar />
-      <div className="container">
+      <div className="container" style={{ marginTop: "90px" }}>
         <Outlet />
       </div>
     </>

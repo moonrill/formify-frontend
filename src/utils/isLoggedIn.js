@@ -5,7 +5,7 @@ export const CheckIfLoggedIn = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user.accessToken) {
+    if (!user?.accessToken) {
       navigate("/login");
     }
   }, [navigate]);

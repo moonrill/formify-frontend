@@ -24,7 +24,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="d-flex align-items-center justify-content-between bg-dark px-5 py-3 text-bg-dark">
+    <nav className="d-flex align-items-center justify-content-between bg-dark px-5 py-3 text-bg-dark position-fixed top-0 w-100">
       <Link
         to={"/"}
         className="fs-4 text-white text-decoration-none fw-semibold"
