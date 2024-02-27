@@ -115,7 +115,13 @@ export const Login = () => {
               </button>
             </form>
 
-            {error && <Alert status={"error"} message={error?.message} />}
+            {error && (
+              <Alert
+                status={"error"}
+                message={error?.message}
+                customStyle={{ top: "0" }}
+              />
+            )}
           </div>
 
           <div className="mt-4 text-center footer">

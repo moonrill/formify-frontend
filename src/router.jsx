@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { Layout } from "./layout/Layout";
 import { FormDetail } from "./pages/FormDetail";
 import { CreateForm } from "./pages/CreateForm";
+import { PageNotFound } from "./pages/PageNotFound";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         element: <CreateForm />,
       },
       {
-        path: "/:slug",
+        path: "/:slug/detail",
         element: <FormDetail />,
       },
     ],
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);
 

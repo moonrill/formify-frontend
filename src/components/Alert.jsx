@@ -5,14 +5,14 @@
  * @param {string} message - the message to be displayed in the alert
  * @return {JSX.Element} the rendered alert component
  */
-export const Alert = ({ status, message }) => {
+export const Alert = ({ status, message, customStyle = {} }) => {
   // Define the CSS classes and icon based on the status prop
-  const alertClass = `m-2 position-absolute shadow p-3 border rounded-3 top-0 end-0 d-flex gap-3`;
+  const alertClass = `m-2 position-absolute shadow bg-white z-3 p-3 border rounded-3 end-0 d-flex gap-3`;
   const iconSrc = status === "error" ? "./xmark.svg" : "./checkmark.svg";
   const title = status === "error" ? "Failed" : "Success";
 
   return (
-    <div className={alertClass}>
+    <div className={alertClass} style={{ ...customStyle }}>
       <img
         src={iconSrc}
         alt={status === "error" ? "danger icon" : "success icon"}
@@ -25,7 +25,7 @@ export const Alert = ({ status, message }) => {
         >
           {title}
         </h1>
-        <p className="m-0 fs-6">{message}</p>
+        <div className="m-0 fs-6">{message}</div>
       </div>
     </div>
   );

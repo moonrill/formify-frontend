@@ -1,3 +1,88 @@
 .main {
   min-height: calc(100vh - 100px);
 }
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+.not-found {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+.slug {
+  background-color: #dddddd;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+}
+
+.btn-tambah {
+  background-color: #dddddd;
+  padding: 7px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000000;
+  font-weight: 600;
+}
+
+.btn-tambah:hover {
+  background-color: #c8c8c8;
+}
+
+.limit {
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  color: white;
+}
+
+.domain {
+  background-color: #00ff66;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+}
+
+.required {
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  color: red;
+  user-select: none;
+}
+
+.input-text {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+.input-text:focus {
+  border-bottom-width: 2px;
+}
