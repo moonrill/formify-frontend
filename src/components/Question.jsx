@@ -19,6 +19,7 @@ export const Question = ({ question, index }) => {
               id={`${question.id}_${index}`}
               name={`question_${question.id}`}
               value={choice}
+              style={{ zoom: "1.3" }}
             />
             <label htmlFor={`${question.id}_${index}`} className="ms-2">
               {choice}

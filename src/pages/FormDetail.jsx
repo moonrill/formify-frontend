@@ -3,6 +3,7 @@ import { api } from "../api";
 import { usePageTitle } from "../hooks/useTittle";
 import { Link, useParams } from "react-router-dom";
 import { Question } from "../components/Question";
+import { QuestionModal } from "../components/QuestionModal";
 
 export const FormDetail = () => {
   // Get form slug
@@ -13,6 +14,7 @@ export const FormDetail = () => {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Get form
   useEffect(() => {
@@ -26,8 +28,6 @@ export const FormDetail = () => {
       })
       .finally(() => setLoading(false));
   }, []);
-
-  console.log(form);
 
   return (
     <>
@@ -50,10 +50,18 @@ export const FormDetail = () => {
         </div>
       )}
 
+      {/* Render the question modal */}
+      {isModalOpen && (
+        <QuestionModal
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+        />
+      )}
+
       {!loading && !error && (
         <div className="row gap-lg-0 gap-md-3 gap-sm-3">
           <div className="col-lg-6 col-sm-12">
-            <div className="sticky-lg-top" style={{ top: "90px" }}>
+            <div className="sticky-lg-top z-1" style={{ top: "90px" }}>
               <div className="d-flex shadow-sm border bg-dark text-bg-dark p-3 border-dark rounded-4 mb-2">
                 <h1 className="fs-2">Form Detail</h1>
               </div>
@@ -71,11 +79,6 @@ export const FormDetail = () => {
                       ? "Limited to One Response"
                       : "Unlimited Responses"}
                   </span>
-                  <div>
-                    <button className="btn-tambah border-1 shadow-sm py-2">
-                      Add question
-                    </button>
-                  </div>
                 </div>
                 <table>
                   <tbody>
@@ -119,8 +122,16 @@ export const FormDetail = () => {
                     </tr>
                   </tbody>
                 </table>
+                <button
+                  className="btn btn-dark mt-4 rounded-3"
+                  onClick={() => setIsModalOpen(true)}
+                  style={{ padding: "8px 0" }}
+                >
+                  Add Question
+                </button>
               </div>
             </div>
+            {/* Button to open the modal */}
           </div>
           <div className="col-lg-6 col-sm-12 mb-4">
             <div className="d-flex border bg-dark text-bg-dark p-3 border-dark rounded-4 mb-2">
@@ -146,9 +157,12 @@ export const FormDetail = () => {
                   ))}
                 </div>
               )}
-              <div className="d-flex justify-content-end mt-4">
-                <button className="btn btn-dark fw-semibold">Submit</button>
-              </div>
+              <button
+                className="btn btn-dark fw-semibold mt-4"
+                style={{ padding: "8px 0" }}
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>
