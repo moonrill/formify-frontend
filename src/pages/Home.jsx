@@ -8,28 +8,38 @@ export const Home = () => {
   usePageTitle("Formify");
   const user = JSON.parse(localStorage.getItem("user"));
   const [forms, setForms] = useState([]);
+  const [userForms, setUserForms] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const userForms = forms.filter((form) => form.creator_id == user.id);
 
   useEffect(() => {
     setLoading(true);
     // Get all forms
     api
       .get("/forms", { Authorization: `Bearer ${user.accessToken}` })
-      .then((res) => setForms(res.forms))
+      .then((res) => {
+        setForms(res.forms);
+        const filteredForms = res.forms.filter(
+          (form) => form.creator_id === user.id
+        );
+        setUserForms(filteredForms);
+      })
       .finally(() => setLoading(false));
   }, []);
 
+  // If you want to update userForms whenever forms changes, you can use another useEffect
+  useEffect(() => {
+    const filteredForms = forms.filter((form) => form.creator_id === user.id);
+    setUserForms(filteredForms);
+  }, [forms]);
+
   return (
     <>
-      {loading && (
+      {loading ? (
         <div className="m-auto d-flex align-items-center gap-3 loading">
           <div className="spinner-border"></div>
           <p className="m-0">Getting forms...</p>
         </div>
-      )}
-      {!loading && (
+      ) : (
         <>
           <div className="row mt-3">
             <div className="d-flex align-items-center justify-content-between">

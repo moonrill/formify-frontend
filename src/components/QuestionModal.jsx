@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { api } from "../api";
+import { Alert } from "./Alert";
 
-export const QuestionModal = ({ isOpen, onClose }) => {
+export const QuestionModal = ({ isOpen, onClose, onSuccess, form }) => {
   const [choiceType, setChoiceType] = useState("short answer");
   const [choices, setChoices] = useState(["", ""]);
   const [questionName, setQuestionName] = useState("");
   const [isRequired, setIsRequired] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleChoiceChange = (index, value) => {
     const newChoices = [...choices];
@@ -79,7 +85,11 @@ export const QuestionModal = ({ isOpen, onClose }) => {
     return null; // If isOpen is false, don't render anything
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
     // Filter choices so the choice cant be empty strin
     let filteredChoices = choices.filter((choice) => choice !== "");
 
@@ -94,17 +104,32 @@ export const QuestionModal = ({ isOpen, onClose }) => {
       is_required: isRequired,
     };
 
-    console.log(data);
+    api
+      .post(`/forms/${form?.slug}/questions`, data, {
+        Authorization: `Bearer ${user?.accessToken}`,
+      })
+      .then(() => {
+        onSuccess();
+        onClose();
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+
+    setTimeout(() => {
+      setError(null);
+    }, 2500);
   };
 
   return (
     <>
       <div className="modal-overlay shadow">
+        {error && <Alert status="error" message={error} />}
         <div className="modal-content">
           <div className="d-flex shadow-sm border bg-dark text-bg-dark py-2 px-3 border-dark rounded-4 mb-2">
             <h1 className="fs-2">Add Question</h1>
           </div>
-          <div
+          <form
+            onSubmit={handleSubmit}
             className="bg-white border border-dark p-3 rounded-4 shadow-sm overflow-y-auto"
             style={{ minHeight: "13rem" }}
           >
@@ -151,17 +176,20 @@ export const QuestionModal = ({ isOpen, onClose }) => {
               <button
                 className="btn border border-dark fw-semibold cancel-btn"
                 onClick={onClose}
+                type="button"
+                disabled={loading}
               >
                 Cancel
               </button>
               <button
+                type="submit"
                 className="btn btn-dark fw-semibold"
-                onClick={handleSubmit}
+                disabled={loading}
               >
-                Add
+                {loading ? "Saving..." : "Save"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </>
