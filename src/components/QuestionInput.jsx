@@ -1,25 +1,32 @@
-export const Question = ({ question, index }) => {
+export const QuestionInput = ({ question, index }) => {
   const choices = question.choices ? question.choices.split(",") : null;
   const inputType = {
-    "short answer": <input type="text" className="flex-fill input-text" />,
+    "short answer": (
+      <input
+        type="text"
+        className="flex-fill p-2 rounded border"
+        placeholder="Enter your answer"
+      />
+    ),
     paragraph: (
       <textarea
         cols="30"
         rows="5"
         className="flex-fill rounded border p-2"
+        placeholder="Enter your answer"
       ></textarea>
     ),
     date: <input type="date" className="flex-fill rounded border p-2" />,
     "multiple choice": (
       <div>
         {choices?.map((choice, index) => (
-          <div key={index}>
+          <div key={index} className="mb-1">
             <input
               type="radio"
               id={`${question.id}_${index}`}
               name={`question_${question.id}`}
               value={choice}
-              style={{ zoom: "1.3" }}
+              style={{ zoom: "1.3", accentColor: "#000" }}
             />
             <label htmlFor={`${question.id}_${index}`} className="ms-2">
               {choice}
