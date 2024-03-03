@@ -34,4 +34,20 @@ export const api = {
       throw error.response.data;
     }
   },
+  delete: async (endpoint, headers = {}) => {
+    try {
+      const url = `${config.apiUrl}${endpoint}`;
+
+      const { data: response } = await axios.delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      });
+
+      return response;
+    } catch (error) {
+      throw error.response.data;
+    }
+  },
 };
