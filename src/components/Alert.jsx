@@ -7,12 +7,15 @@
  */
 export const Alert = ({ status, message, customStyle = {} }) => {
   // Define the CSS classes and icon based on the status prop
-  const alertClass = `m-2 position-absolute shadow bg-white z-3 p-3 border rounded-3 end-0 d-flex gap-3`;
-  const iconSrc = status === "error" ? "./xmark.svg" : "./checkmark.svg";
+  const alertClass = `m-2 position-fixed shadow bg-white p-3 border rounded-3 end-0 top-0 d-flex gap-3`;
+  const iconSrc = status === "error" ? "/xmark.svg" : "/checkmark.svg";
   const title = status === "error" ? "Failed" : "Success";
 
   return (
-    <div className={alertClass} style={{ ...customStyle }}>
+    <div
+      className={alertClass}
+      style={{ ...customStyle, maxWidth: "400px", zIndex: 999 }}
+    >
       <img
         src={iconSrc}
         alt={status === "error" ? "danger icon" : "success icon"}
