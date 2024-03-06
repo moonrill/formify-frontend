@@ -1,6 +1,16 @@
+import { useState } from "react";
+
 export const QuestionInfo = ({ question, index, onRemove }) => {
-  const handleClick = () => {
-    onRemove(question.id);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const handleRemove = () => {
+    setIsDeleting(true);
+    onRemove(question.id)
+      .then(() => {
+        setIsDeleting(false);
+      })
+      .catch(() => {
+        setIsDeleting(false);
+      });
   };
 
   return (
@@ -49,9 +59,10 @@ export const QuestionInfo = ({ question, index, onRemove }) => {
       <button
         className="btn btn-outline-danger mt-4"
         type="button"
-        onClick={handleClick}
+        onClick={handleRemove}
+        disabled={isDeleting}
       >
-        Remove question
+        {isDeleting ? "Removing..." : "Remove question"}
       </button>
     </div>
   );

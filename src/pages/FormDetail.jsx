@@ -4,6 +4,7 @@ import { usePageTitle } from "../hooks/useTittle";
 import { Link, useParams } from "react-router-dom";
 import { QuestionModal } from "../components/QuestionModal";
 import { QuestionInfo } from "../components/QuestionInfo";
+import { CheckIfCreator } from "../utils/isCreator";
 
 export const FormDetail = () => {
   // Get form slug
@@ -11,7 +12,7 @@ export const FormDetail = () => {
   // Set title to form slug
   usePageTitle(`${slug} detail`);
   // State
-  const { accessToken } = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,14 +22,16 @@ export const FormDetail = () => {
   const fetchFormData = () => {
     setLoading(true);
     api
-      .get(`/forms/${slug}`, { Authorization: `Bearer ${accessToken}` })
-      .then((res) => {
-        setForm(res.form);
+      .get(`/forms/${slug}`, { Authorization: `Bearer ${user?.accessToken}` })
+      .then(({ form }) => {
+        setForm(form);
       })
       .catch((error) => {
         setError(error);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   // Handle all question change
@@ -45,7 +48,7 @@ export const FormDetail = () => {
   const handleQuestionRemove = (questionId) => {
     api
       .delete(`/forms/${slug}/questions/${questionId}`, {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${user?.accessToken}`,
       })
       .then(() => {
         handleQuestionChange();
@@ -59,7 +62,9 @@ export const FormDetail = () => {
   // Get form
   useEffect(() => {
     fetchFormData();
-  }, [slug, accessToken]);
+  }, [slug, user?.accessToken]);
+
+  CheckIfCreator(form?.creator_id, user.id);
 
   return (
     <>
@@ -141,6 +146,20 @@ export const FormDetail = () => {
                           </span>
                         ))}
                       </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="fw-semibold">Link</td>
+                    <td>:</td>
+                    <td>
+                      <Link
+                        to={`/${form.slug}/submit`}
+                        className="link d-flex gap-1"
+                        style={{ width: "fit-content" }}
+                      >
+                        <img src="/arrow-up.svg" alt="Arrow" width={12} />
+                        Visit form
+                      </Link>
                     </td>
                   </tr>
                 </tbody>

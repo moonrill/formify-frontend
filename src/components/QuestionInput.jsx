@@ -1,4 +1,4 @@
-export const QuestionInput = ({ question, index }) => {
+export const QuestionInput = ({ question }) => {
   const choices = question.choices ? question.choices.split(",") : null;
   const inputType = {
     "short answer": (
@@ -20,7 +20,10 @@ export const QuestionInput = ({ question, index }) => {
     "multiple choice": (
       <div>
         {choices?.map((choice, index) => (
-          <div key={index} className="mb-1">
+          <div
+            key={index}
+            className="mb-2 ms-2 d-flex align-align-items-center"
+          >
             <input
               type="radio"
               id={`${question.id}_${index}`}
@@ -64,15 +67,19 @@ export const QuestionInput = ({ question, index }) => {
   const inputElement = inputType[question.choice_type] || null;
 
   return (
-    <div key={question.id} className="border rounded-3 p-3">
+    <div
+      key={question.id}
+      className="border border-dark rounded-4 py-3 px-4 mb-3"
+    >
       <div className="d-flex gap-2">
-        <p>{index + 1}.</p>
         <div className="w-100">
           <div className="d-flex">
-            <p className="flex-fill m-1">{question.name}</p>
-            {question.is_required == 1 && (
-              <span className="required fw-semibold fs-5">*</span>
-            )}
+            <p className="flex-fill m-0 mb-3">
+              {question.name}
+              {question.is_required && (
+                <span className="required fw-semibold fs-5 p-0 ps-1">*</span>
+              )}
+            </p>
           </div>
           <div className="d-flex">{inputElement}</div>
         </div>

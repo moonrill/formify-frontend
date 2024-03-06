@@ -5,6 +5,8 @@ import { Layout } from "./layout/Layout";
 import { FormDetail } from "./pages/FormDetail";
 import { CreateForm } from "./pages/CreateForm";
 import { PageNotFound } from "./pages/PageNotFound";
+import { SubmitForm } from "./pages/SubmitForm";
+import { Forbidden } from "./pages/Forbidden";
 
 const router = createBrowserRouter([
   {
@@ -23,11 +25,19 @@ const router = createBrowserRouter([
         path: "/:slug/detail",
         element: <FormDetail />,
       },
+      {
+        path: "/:slug/submit",
+        element: <SubmitForm />,
+      },
     ],
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "forbidden",
+    element: <Forbidden />,
   },
   {
     path: "*",

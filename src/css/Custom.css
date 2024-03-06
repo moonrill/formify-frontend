@@ -49,6 +49,7 @@
   text-decoration: none;
   color: #000000;
   font-weight: 600;
+  text-align: center;
 }
 
 .btn-tambah:hover {
@@ -120,4 +121,18 @@
 
 .cancel-btn:hover {
   background-color: #f1f1f1;
+}
+
+.link {
+  text-decoration: none;
+  background-color: #C3DDFD;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: .8rem;
+  color: rgb(30 66 159);
+  font-weight: 600;
+}
+
+.link:hover {
+  background-color: #aad0ff;
 }

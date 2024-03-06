@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { usePageTitle } from "../hooks/useTittle";
 import { api } from "../api";
 import { Link } from "react-router-dom";
+import { FormCard } from "../components/FormCard";
 
 export const Home = () => {
   // CheckIfLoggedIn();
@@ -16,21 +17,15 @@ export const Home = () => {
     // Get all forms
     api
       .get("/forms", { Authorization: `Bearer ${user.accessToken}` })
-      .then((res) => {
-        setForms(res.forms);
-        const filteredForms = res.forms.filter(
-          (form) => form.creator_id === user.id
+      .then(({ forms }) => {
+        setForms(forms);
+        const filteredForms = forms.filter(
+          (form) => form.creator_id == user.id
         );
         setUserForms(filteredForms);
       })
       .finally(() => setLoading(false));
   }, []);
-
-  // If you want to update userForms whenever forms changes, you can use another useEffect
-  useEffect(() => {
-    const filteredForms = forms.filter((form) => form.creator_id === user.id);
-    setUserForms(filteredForms);
-  }, [forms]);
 
   return (
     <>
@@ -41,59 +36,40 @@ export const Home = () => {
         </div>
       ) : (
         <>
-          <div className="row mt-3">
-            <div className="d-flex align-items-center justify-content-between">
-              <h1 className="fs-2 mb-3">Forms you Created</h1>
-              <Link className="btn-tambah" to={"/create"}>
-                Add form
-              </Link>
-            </div>
-            <div className="d-flex gap-3 flex-wrap w-100">
-              {userForms.length > 0 &&
-                userForms?.map((form) => (
-                  <div
-                    key={form.id}
-                    className="border border-dark p-3 rounded"
-                    style={{ width: "20rem" }}
-                  >
-                    <h1 className="fs-5">{form.name}</h1>
-                    <span className="slug fw-semibold">{form.slug}</span>
-                    <p className="m-0 fs-6 mt-2">{form.description}</p>
-                    <Link
-                      className="btn btn-dark mt-3 fw-semibold"
-                      to={`/${form.slug}/detail`}
-                    >
-                      See details
-                    </Link>
-                  </div>
-                ))}
-              {!loading && userForms.length == 0 && (
-                <p className="m-auto">No forms created</p>
-              )}
-            </div>
+          {/* USER'S FORM SECTION */}
+          <div className="d-flex align-items-center p-0 justify-content-between">
+            <h1 className="fs-2">Your Forms</h1>
+            <Link className="btn-tambah" to={"/create"}>
+              Add form
+            </Link>
           </div>
-          <div className="row mt-2">
-            <h1 className="fs-2 mb-3">Available forms</h1>
-            <div className="d-flex gap-3 flex-wrap">
-              {forms?.map((form) => (
-                <div
-                  key={form.id}
-                  className="border border-dark p-3 rounded"
-                  style={{ width: "20rem" }}
-                >
-                  <h1 className="fs-5">{form.name}</h1>
-                  <span className="slug fw-semibold">{form.slug}</span>
-                  <p className="m-0 fs-6 mt-2">{form.description}</p>
-                  <Link
-                    className="btn btn-dark mt-3 fw-semibold"
-                    to={`/${form.slug}/detail`}
-                  >
-                    See details
-                  </Link>
+          <div className="row g-3 mt-1">
+            {userForms.length > 0 &&
+              userForms?.map((form) => (
+                <div key={form.id} className="col-lg-3 col-md-4 col-sm-6">
+                  <FormCard form={form} key={form.id} />
                 </div>
               ))}
-            </div>
+            {!loading && userForms.length == 0 && (
+              <p className="m-auto">No forms created</p>
+            )}
           </div>
+          {/* USER'S FORM SECTION */}
+
+          {/* AVAILABLE FORM SECTION */}
+          <h1 className="fs-2 mt-5 p-0">Available forms</h1>
+          <div className="row g-3 mb-4 mt-1">
+            {forms.length ? (
+              forms?.map((form) => (
+                <div key={form.id} className="col-lg-3 col-md-4 col-sm-6">
+                  <FormCard form={form} />
+                </div>
+              ))
+            ) : (
+              <p className="m-auto">No forms available</p>
+            )}
+          </div>
+          {/* AVAILABLE FORM SECTION */}
         </>
       )}
     </>
