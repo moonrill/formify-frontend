@@ -29,7 +29,10 @@ export const QuestionInfo = ({ question, index, onRemove }) => {
         </span>
       </div>
 
-      <table className="mt-3">
+      <table
+        className="mt-3"
+        style={{ borderCollapse: "separate", borderSpacing: "0 5px" }}
+      >
         <tbody>
           <tr>
             <td className="fw-semibold">Question name</td>

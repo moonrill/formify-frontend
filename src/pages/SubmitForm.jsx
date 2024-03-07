@@ -48,7 +48,9 @@ export const SubmitForm = () => {
                     <Link className="btn-tambah px-3" to={"/"}>
                       Back to home
                     </Link>
-                    <button className="btn btn-dark rounded-3">Submit</button>
+                    <button className="btn btn-dark rounded-3 fw-semibold">
+                      Submit
+                    </button>
                   </div>
                 </>
               ) : (

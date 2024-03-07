@@ -62,7 +62,7 @@ export const Home = () => {
             {forms.length ? (
               forms?.map((form) => (
                 <div key={form.id} className="col-lg-3 col-md-4 col-sm-6">
-                  <FormCard form={form} />
+                  <FormCard form={form} disableDetails={true} />
                 </div>
               ))
             ) : (

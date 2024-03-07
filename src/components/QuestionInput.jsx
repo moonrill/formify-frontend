@@ -6,6 +6,7 @@ export const QuestionInput = ({ question }) => {
         type="text"
         className="flex-fill p-2 rounded border"
         placeholder="Enter your answer"
+        required={question.is_required}
       />
     ),
     paragraph: (
@@ -14,9 +15,16 @@ export const QuestionInput = ({ question }) => {
         rows="5"
         className="flex-fill rounded border p-2"
         placeholder="Enter your answer"
+        required={question.is_required}
       ></textarea>
     ),
-    date: <input type="date" className="flex-fill rounded border p-2" />,
+    date: (
+      <input
+        type="date"
+        className="flex-fill rounded border p-2"
+        required={question.is_required}
+      />
+    ),
     "multiple choice": (
       <div>
         {choices?.map((choice, index) => (

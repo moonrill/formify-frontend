@@ -136,3 +136,18 @@
 .link:hover {
   background-color: #aad0ff;
 }
+
+.copy-btn {
+  border: 1px solid black;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border-radius: 8px;
+  background-color: white;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.copy-btn:hover {
+  background-color: #ddd;
+}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { usePageTitle } from "../hooks/useTittle";
 import { api } from "../api";
 import { Alert } from "../components/Alert";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const CreateForm = () => {
   usePageTitle("Create Form");
@@ -135,13 +135,17 @@ export const CreateForm = () => {
                 onChange={(e) => setLimit(e.target.checked)}
               />
             </div>
-            <button
-              className="btn btn-dark fw-semibold w-100 rounded-4 mt-3"
-              style={{ padding: "10px 0" }}
-              disabled={loading}
-            >
-              {loading ? "Creating..." : "Create"}
-            </button>
+            <div className="d-flex align-items-center justify-content-between mt-4">
+              <Link className="btn-tambah px-3 py-2" to={"/"}>
+                Back to home
+              </Link>
+              <button
+                className="btn btn-dark fw-semibold rounded-3 py-2"
+                disabled={loading}
+              >
+                {loading ? "Creating..." : "Create form"}
+              </button>
+            </div>
           </form>
         </div>
       </div>

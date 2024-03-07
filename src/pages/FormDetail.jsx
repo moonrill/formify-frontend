@@ -17,6 +17,7 @@ export const FormDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Function to fetch form data
   const fetchFormData = () => {
@@ -43,6 +44,21 @@ export const FormDetail = () => {
   const handleQuestionAdded = () => {
     setIsModalOpen(false); // Close modal
     handleQuestionChange(); // Refresh form data
+  };
+
+  const copyToClipboard = () => {
+    const fullURL = window.location.origin + `/${form.slug}/submit`;
+    navigator.clipboard
+      .writeText(fullURL)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => {
+          setCopySuccess(false);
+        }, 2000); // 2 seconds
+      })
+      .catch((error) => {
+        console.error("Failed to copy:", error);
+      });
   };
 
   const handleQuestionRemove = (questionId) => {
@@ -108,7 +124,12 @@ export const FormDetail = () => {
                     : "Unlimited Responses"}
                 </span>
               </div>
-              <table>
+              <table
+                style={{
+                  borderCollapse: "separate",
+                  borderSpacing: "0 0.4rem",
+                }}
+              >
                 <tbody>
                   <tr>
                     <td className="fw-semibold">Name</td>
@@ -151,7 +172,7 @@ export const FormDetail = () => {
                   <tr>
                     <td className="fw-semibold">Link</td>
                     <td>:</td>
-                    <td>
+                    <td className="d-flex gap-1">
                       <Link
                         to={`/${form.slug}/submit`}
                         className="link d-flex gap-1"
@@ -160,6 +181,13 @@ export const FormDetail = () => {
                         <img src="/arrow-up.svg" alt="Arrow" width={12} />
                         Visit form
                       </Link>
+                      <button className="copy-btn" onClick={copyToClipboard}>
+                        <img src="/clipboard.svg" alt="clipboard" width={12} />{" "}
+                        Copy
+                      </button>
+                      {copySuccess && (
+                        <span className="fs-6 fw-semibold">Link copied!</span>
+                      )}
                     </td>
                   </tr>
                 </tbody>
