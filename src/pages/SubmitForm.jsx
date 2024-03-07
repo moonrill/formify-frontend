@@ -10,16 +10,35 @@ export const SubmitForm = () => {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [answers, setAnswers] = useState([]);
 
   useEffect(() => {
     api
       .get(`/forms/${slug}`, { Authorization: `Bearer ${user?.accessToken}` })
       .then(({ form }) => {
         setForm(form);
+        setAnswers(
+          form.questions.map((question) => ({
+            question_id: question.id,
+            value: "",
+          }))
+        );
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [slug, user?.accessToken]);
+
+  const handleInputChange = (questionId, value) => {
+    setAnswers((prevAnswers) =>
+      prevAnswers.map((answer) =>
+        answer.question_id === questionId ? { ...answer, value } : answer
+      )
+    );
+  };
+
+  const handleSubmit = () => {
+    console.log(answers);
+  };
 
   return (
     <>
@@ -42,13 +61,20 @@ export const SubmitForm = () => {
               {form?.questions.length ? (
                 <>
                   {form?.questions.map((question) => (
-                    <QuestionInput key={question.id} question={question} />
+                    <QuestionInput
+                      key={question.id}
+                      question={question}
+                      onInputChange={handleInputChange}
+                    />
                   ))}
                   <div className="d-flex justify-content-between">
                     <Link className="btn-tambah px-3" to={"/"}>
                       Back to home
                     </Link>
-                    <button className="btn btn-dark rounded-3 fw-semibold">
+                    <button
+                      className="btn btn-dark rounded-3 fw-semibold"
+                      onClick={handleSubmit}
+                    >
                       Submit
                     </button>
                   </div>

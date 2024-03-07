@@ -1,5 +1,30 @@
-export const QuestionInput = ({ question }) => {
+import { useState } from "react";
+
+export const QuestionInput = ({ question, onInputChange }) => {
   const choices = question.choices ? question.choices.split(",") : null;
+  const [checkboxValues, setCheckboxValues] = useState([]);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    onInputChange(question.id, value);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
+
+    let updatedValues;
+    if (isChecked) {
+      updatedValues = [...checkboxValues, value];
+    } else {
+      updatedValues = checkboxValues.filter((item) => item !== value);
+    }
+    setCheckboxValues(updatedValues);
+
+    const joinedValues = updatedValues.join(",");
+    onInputChange(question.id, joinedValues);
+  };
+
   const inputType = {
     "short answer": (
       <input
@@ -7,6 +32,7 @@ export const QuestionInput = ({ question }) => {
         className="flex-fill p-2 rounded border"
         placeholder="Enter your answer"
         required={question.is_required}
+        onChange={handleInputChange}
       />
     ),
     paragraph: (
@@ -23,6 +49,7 @@ export const QuestionInput = ({ question }) => {
         type="date"
         className="flex-fill rounded border p-2"
         required={question.is_required}
+        onChange={handleInputChange}
       />
     ),
     "multiple choice": (
@@ -38,6 +65,8 @@ export const QuestionInput = ({ question }) => {
               name={`question_${question.id}`}
               value={choice}
               style={{ zoom: "1.3", accentColor: "#000" }}
+              required={question.is_required}
+              onChange={handleInputChange}
             />
             <label htmlFor={`${question.id}_${index}`} className="ms-2">
               {choice}
@@ -47,7 +76,15 @@ export const QuestionInput = ({ question }) => {
       </div>
     ),
     dropdown: (
-      <select required={question.is_required} className="form-select">
+      <select
+        required={question.is_required}
+        className="form-select"
+        onChange={handleInputChange}
+        defaultValue={""}
+      >
+        <option value="" disabled={question.is_required}>
+          Select an option
+        </option>
         {choices?.map((choice, index) => (
           <option value={choice} key={index}>
             {choice}
@@ -65,6 +102,8 @@ export const QuestionInput = ({ question }) => {
               name={`question_${index}_${index}`}
               value={choice}
               style={{ zoom: "1.3", accentColor: "#000" }}
+              required={question.is_required}
+              onChange={handleCheckboxChange}
             />
             <label htmlFor={`${question.id}_${index}`} className="ms-2">
               {choice}
