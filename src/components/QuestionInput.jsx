@@ -47,27 +47,30 @@ export const QuestionInput = ({ question }) => {
       </div>
     ),
     dropdown: (
-      <select>
-        {choices?.map((choice, index) => {
+      <select required={question.is_required} className="form-select">
+        {choices?.map((choice, index) => (
           <option value={choice} key={index}>
             {choice}
-          </option>;
-        })}
+          </option>
+        ))}
       </select>
     ),
     checkboxes: (
       <div>
-        {choices?.map((choice, index) => {
-          <div key={index}>
+        {choices?.map((choice, index) => (
+          <div key={index} className="mb-1 d-flex align-items-center ms-2">
             <input
               type="checkbox"
               id={`${question.id}_${index}`}
               name={`question_${index}_${index}`}
               value={choice}
+              style={{ zoom: "1.3", accentColor: "#000" }}
             />
-            <label htmlFor={`${question.id}_${index}`}>{choice}</label>
-          </div>;
-        })}
+            <label htmlFor={`${question.id}_${index}`} className="ms-2">
+              {choice}
+            </label>
+          </div>
+        ))}
       </div>
     ),
   };
