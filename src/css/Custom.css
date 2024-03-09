@@ -138,12 +138,13 @@
 }
 
 .copy-btn {
-  border: 1px solid black;
+  border: none;
   display: flex;
   gap: 5px;
+  padding: 3px 10px;
   align-items: center;
   border-radius: 8px;
-  background-color: white;
+  background-color: #EAEDEF;
   font-size: .8rem;
   font-weight: 600;
 }

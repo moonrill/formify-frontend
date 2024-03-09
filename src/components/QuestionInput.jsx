@@ -102,7 +102,6 @@ export const QuestionInput = ({ question, onInputChange }) => {
               name={`question_${index}_${index}`}
               value={choice}
               style={{ zoom: "1.3", accentColor: "#000" }}
-              required={question.is_required}
               onChange={handleCheckboxChange}
             />
             <label htmlFor={`${question.id}_${index}`} className="ms-2">
@@ -126,9 +125,9 @@ export const QuestionInput = ({ question, onInputChange }) => {
           <div className="d-flex">
             <p className="flex-fill m-0 mb-3">
               {question.name}
-              {question.is_required && (
+              {question.is_required ? (
                 <span className="required fw-semibold fs-5 p-0 ps-1">*</span>
-              )}
+              ) : null}
             </p>
           </div>
           <div className="d-flex">{inputElement}</div>

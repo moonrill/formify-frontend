@@ -183,11 +183,8 @@ export const FormDetail = () => {
                       </Link>
                       <button className="copy-btn" onClick={copyToClipboard}>
                         <img src="/clipboard.svg" alt="clipboard" width={12} />{" "}
-                        Copy
+                        {copySuccess ? "Copied!" : "Copy"}
                       </button>
-                      {copySuccess && (
-                        <span className="fs-6 fw-semibold">Link copied!</span>
-                      )}
                     </td>
                   </tr>
                 </tbody>
