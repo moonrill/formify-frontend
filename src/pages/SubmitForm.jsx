@@ -49,8 +49,8 @@ export const SubmitForm = () => {
       .post(`/forms/${slug}/responses`, data, {
         Authorization: `Bearer ${user?.accessToken}`,
       })
-      .then((res) => {
-        setSuccess(res.message);
+      .then(({ message }) => {
+        setSuccess(message);
       })
       .catch((err) => setError(err.message))
       .finally(() => setSubmitLoading(false));
@@ -135,7 +135,7 @@ export const SubmitForm = () => {
               )}
             </div>
           </div>
-          {error && (
+          {(error || success) && (
             <Alert
               status={error ? "error" : "success"}
               message={error || success}

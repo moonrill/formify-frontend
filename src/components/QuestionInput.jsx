@@ -42,6 +42,7 @@ export const QuestionInput = ({ question, onInputChange }) => {
         className="flex-fill rounded border p-2"
         placeholder="Enter your answer"
         required={question.is_required}
+        onChange={handleInputChange}
       ></textarea>
     ),
     date: (
