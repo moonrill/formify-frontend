@@ -125,10 +125,10 @@
 
 .link {
   text-decoration: none;
-  background-color: #C3DDFD;
+  background-color: #c3ddfd;
   padding: 3px 10px;
   border-radius: 8px;
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: rgb(30 66 159);
   font-weight: 600;
 }
@@ -144,11 +144,35 @@
   padding: 3px 10px;
   align-items: center;
   border-radius: 8px;
-  background-color: #EAEDEF;
-  font-size: .8rem;
+  background-color: #eaedef;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .copy-btn:hover {
   background-color: #ddd;
+}
+
+.responses-table {
+  width: 100%;
+  font-size: 13px;
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+  overflow: hidden;
+}
+
+.responses-table th {
+  padding: 10px 15px;
+  color: white;
+  background-color: #212529;
+}
+
+.responses-table td {
+  padding: 10px 15px;
+}
+
+.responses-table tr {
+  border-bottom: 1px solid #eaeaea;
 }

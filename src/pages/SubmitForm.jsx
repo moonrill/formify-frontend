@@ -4,10 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import { api } from "../api";
 import { Alert } from "../components/Alert";
 import { QuestionInput } from "../components/QuestionInput";
+import { useNavigate } from "react-router-dom";
 
 export const SubmitForm = () => {
   const { slug } = useParams();
   usePageTitle(slug);
+
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
@@ -19,20 +22,34 @@ export const SubmitForm = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    api
-      .get(`/forms/${slug}`, { Authorization: `Bearer ${user?.accessToken}` })
-      .then(({ form }) => {
+    const fetchFormData = async () => {
+      try {
+        const { form } = await api.get(`/forms/${slug}`, {
+          Authorization: `Bearer ${user?.accessToken}`,
+        });
+        // Perform domain check here
+        const userDomain = user?.email.split("@")[1];
+        if (!form.allowed_domains.includes(userDomain)) {
+          // Redirect to forbidden page
+          navigate("/forbidden");
+          return; // Exit early
+        }
         setForm(form);
         setAnswers(
           form.questions.map((question) => ({
             question_id: question.id,
-            value: "",
+            value: null,
           }))
         );
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [slug, user?.accessToken]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFormData();
+  }, [slug, user?.accessToken, user?.email, navigate]);
 
   const handleInputChange = (questionId, value) => {
     setAnswers((prevAnswers) =>
@@ -73,6 +90,19 @@ export const SubmitForm = () => {
           <div className="row justify-content-center">
             <div className="col col-md-10 col-lg-7 border border-dark rounded-4 p-4 mx-3">
               <h1>{form.name}</h1>
+              <span
+                className="limit fw-semibold"
+                style={{
+                  backgroundColor: form.limit_one_response
+                    ? "#7300ff"
+                    : "#0077ff",
+                }}
+              >
+                {form.limit_one_response
+                  ? "Limited to One Response"
+                  : "Unlimited Responses"}
+              </span>
+              <p className="mt-3">{form.description}</p>
               <div className="d-flex align-items-center gap-2 my-3">
                 {form?.allowed_domains.length ? (
                   <>
@@ -102,8 +132,6 @@ export const SubmitForm = () => {
                   </>
                 )}
               </div>
-              <p>{form.description}</p>
-              <p className="m-0 fw-semibold">{user?.email}</p>
             </div>
           </div>
           <div className="row justify-content-center my-3">

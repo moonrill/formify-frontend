@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { QuestionModal } from "../components/QuestionModal";
 import { QuestionInfo } from "../components/QuestionInfo";
 import { CheckIfCreator } from "../utils/isCreator";
+import { ResponsesTable } from "../components/ResponsesTable";
 
 export const FormDetail = () => {
   // Get form slug
@@ -14,6 +15,7 @@ export const FormDetail = () => {
   // State
   const user = JSON.parse(localStorage.getItem("user"));
   const [form, setForm] = useState({});
+  const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,10 +24,18 @@ export const FormDetail = () => {
   // Function to fetch form data
   const fetchFormData = () => {
     setLoading(true);
-    api
-      .get(`/forms/${slug}`, { Authorization: `Bearer ${user?.accessToken}` })
-      .then(({ form }) => {
+
+    Promise.all([
+      api.get(`/forms/${slug}`, {
+        Authorization: `Bearer ${user?.accessToken}`,
+      }),
+      api.get(`/forms/${slug}/responses`, {
+        Authorization: `Bearer ${user?.accessToken}`,
+      }),
+    ])
+      .then(([{ form }, { responses }]) => {
         setForm(form);
+        setResponses(responses);
       })
       .catch((error) => {
         setError(error);
@@ -207,8 +217,8 @@ export const FormDetail = () => {
                 className="d-flex flex-column border p-4 border-dark rounded-4 shadow-sm"
                 style={{ minHeight: "205px" }}
               >
-                {form.questions.length ? (
-                  form.questions.map((question, index) => (
+                {form?.questions.length ? (
+                  form?.questions.map((question, index) => (
                     <QuestionInfo
                       key={question.id}
                       question={question}
@@ -224,13 +234,15 @@ export const FormDetail = () => {
               </div>
             </div>
           </div>
-          {/* Table of responses */}
           <div className="col-lg-7">
-            <div className="d-flex border bg-dark text-bg-dark px-3 py-2 border-dark rounded-4 mb-2">
-              <h1 className="fs-2">Responses</h1>
+            <div className="d-flex border bg-dark align-items-center justify-content-between text-bg-dark px-3 py-2 border-dark rounded-4 mb-2">
+              <h1 className="fs-2 m-0">Responses</h1>
+              <h1 className="fs-1 m-0">{responses?.length}</h1>
             </div>
+            {/* Table of responses */}
+            <ResponsesTable form={form} responses={responses} />
+            {/* Table of responses */}
           </div>
-          {/* Table of responses */}
         </div>
       )}
 
