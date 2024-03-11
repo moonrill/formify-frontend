@@ -18,6 +18,8 @@ export const SubmitForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [answers, setAnswers] = useState([]);
+  const [isRequiredQuestionFilled, setIsRequiredQuestionFilled] =
+    useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -52,11 +54,40 @@ export const SubmitForm = () => {
   }, [slug, user?.accessToken, user?.email, navigate]);
 
   const handleInputChange = (questionId, value) => {
+    // Set value to null if it's an empty string
+    if (value === "") {
+      value = null;
+    }
+
+    // Update the answers state
     setAnswers((prevAnswers) =>
       prevAnswers.map((answer) =>
         answer.question_id === questionId ? { ...answer, value } : answer
       )
     );
+
+    // Use the callback form of setAnswers to ensure state is updated before calling checkIfRequiredQuestionFilled
+    setAnswers((prevAnswers) => {
+      checkIfRequiredQuestionFilled(prevAnswers);
+      return prevAnswers;
+    });
+  };
+
+  // Check if all required questions have been answered
+  const checkIfRequiredQuestionFilled = (currentAnswers) => {
+    const requiredQuestions = form.questions.filter(
+      (question) => question.is_required
+    );
+
+    const requiredAnswers = currentAnswers.filter((answer) =>
+      requiredQuestions.some(
+        (question) =>
+          answer.question_id === question.id && answer.value !== null
+      )
+    );
+
+    const isFilled = requiredAnswers.length === requiredQuestions.length;
+    setIsRequiredQuestionFilled(isFilled);
   };
 
   const handleSubmit = () => {
@@ -145,6 +176,11 @@ export const SubmitForm = () => {
                       onInputChange={handleInputChange}
                     />
                   ))}
+                  {!isRequiredQuestionFilled && (
+                    <p className="text-danger text-end">
+                      Please answer all required questions to submit
+                    </p>
+                  )}
                   <div className="d-flex justify-content-between">
                     <Link className="btn-tambah px-3" to={"/"}>
                       Back to home
@@ -152,7 +188,7 @@ export const SubmitForm = () => {
                     <button
                       className="btn btn-dark rounded-3 fw-semibold"
                       onClick={handleSubmit}
-                      disabled={submitLoading}
+                      disabled={submitLoading || !isRequiredQuestionFilled}
                     >
                       {submitLoading ? "Submitting..." : "Submit"}
                     </button>
