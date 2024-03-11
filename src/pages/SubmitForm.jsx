@@ -31,7 +31,10 @@ export const SubmitForm = () => {
         });
         // Perform domain check here
         const userDomain = user?.email.split("@")[1];
-        if (!form.allowed_domains.includes(userDomain)) {
+        if (
+          form?.allowed_domains.length > 0 &&
+          !form.allowed_domains.includes(userDomain)
+        ) {
           // Redirect to forbidden page
           navigate("/forbidden");
           return; // Exit early
